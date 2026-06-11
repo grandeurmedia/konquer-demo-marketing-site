@@ -1,0 +1,775 @@
+/* ============================================================
+   KONQUER — LANDING PAGE
+   Luxury editorial meets surgical precision.
+   Black on white. Maximum negative space. Typography works.
+   Color appears exactly once.
+   ============================================================ */
+
+.page {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --grey-50: #F7F7F7;
+  --grey-200: #E4E4E4;
+  --grey-400: #9C9C9C;
+  --grey-600: #5C5C5C;
+  --blue: #1548FF;
+
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--white);
+  transition: border-bottom 0.3s ease;
+}
+
+.navScrolled {
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.navInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navWordmark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  text-decoration: none;
+}
+
+.navCenter {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+}
+
+.navCta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--black);
+  text-decoration: none;
+  padding: 9px 20px;
+  border: 1px solid var(--black);
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navCta:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ============================================================
+   SHARED UTILITIES
+   ============================================================ */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.containerNarrow {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.containerMedium {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey-600);
+}
+
+.rule {
+  height: 1px;
+  background: var(--grey-200);
+}
+
+.section {
+  padding: 120px 0;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 68px;
+  position: relative;
+}
+
+.heroInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 48px 100px;
+}
+
+.heroEyebrow {
+  margin-bottom: 48px;
+}
+
+.heroHeadline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  max-width: 860px;
+  margin-bottom: 52px;
+  color: var(--black);
+}
+
+.heroSub {
+  font-size: 19px;
+  line-height: 1.78;
+  font-weight: 300;
+  color: var(--grey-600);
+  max-width: 480px;
+  margin-bottom: 60px;
+}
+
+.heroReveal {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--blue);
+}
+
+.heroScroll {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.heroScrollLabel {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+}
+
+.heroScrollLine {
+  width: 1px;
+  height: 52px;
+  background: var(--grey-200);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroScrollLine::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--grey-400);
+  animation: scrollLine 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%   { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* ============================================================
+   THE FOG — PROBLEM SECTION
+   ============================================================ */
+.fogGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.fogStatement {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--black);
+}
+
+.fogCopy {
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 300;
+  color: var(--grey-600);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fogEmphasis {
+  color: var(--black);
+  font-weight: 400;
+}
+
+/* ============================================================
+   THE PRESCRIPTION — PRODUCT SECTION
+   ============================================================ */
+.productHeader {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.productHeaderEyebrow {
+  margin-bottom: 24px;
+}
+
+.productStatement {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(34px, 4.5vw, 60px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+
+/* MOCK PRODUCT CARD */
+.cardDemo {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid var(--grey-200);
+}
+
+.cardHeader {
+  padding: 26px 40px;
+  border-bottom: 1px solid var(--grey-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardLabel {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey-600);
+}
+
+.cardScore {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grey-600);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.cardScoreValue {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--black);
+  letter-spacing: -0.01em;
+}
+
+.cardBody {
+  padding: 48px 40px;
+}
+
+.cardMove {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--black);
+  margin-bottom: 44px;
+}
+
+.cardMetrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--grey-200);
+  border-bottom: 1px solid var(--grey-200);
+  margin-bottom: 36px;
+}
+
+.cardMetric {
+  padding: 28px 32px;
+}
+
+.cardMetric + .cardMetric {
+  border-left: 1px solid var(--grey-200);
+}
+
+.cardMetricLabel {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+  margin-bottom: 10px;
+}
+
+.cardMetricValue {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 1;
+}
+
+.cardReasoning {
+  font-size: 14px;
+  line-height: 1.75;
+  font-weight: 300;
+  color: var(--grey-600);
+}
+
+.cardReasoningStrong {
+  color: var(--black);
+  font-weight: 400;
+}
+
+.cardFooter {
+  padding: 24px 40px;
+  border-top: 1px solid var(--grey-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardBtnPrimary {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--black);
+  background: none;
+  padding: 11px 26px;
+  border: 1px solid var(--black);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.cardBtnPrimary:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.cardBtnGhost {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--grey-600);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.cardBtnGhost:hover {
+  color: var(--black);
+}
+
+.cardFootnote {
+  text-align: center;
+  margin-top: 44px;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--grey-600);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   THREE PILLARS
+   ============================================================ */
+.pillarsHeader {
+  margin-bottom: 72px;
+}
+
+.pillarsHeaderEyebrow {
+  margin-bottom: 20px;
+}
+
+.pillarsHeaderHeadline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  max-width: 500px;
+}
+
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--grey-200);
+}
+
+.pillar {
+  padding: 52px 52px 52px 0;
+}
+
+.pillar + .pillar {
+  padding-left: 52px;
+  border-left: 1px solid var(--grey-200);
+}
+
+.pillarNumber {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--grey-400);
+  margin-bottom: 28px;
+  font-weight: 400;
+}
+
+.pillarTitle {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--black);
+  margin-bottom: 6px;
+  line-height: 1;
+}
+
+.pillarSub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--grey-400);
+  margin-bottom: 24px;
+}
+
+.pillarText {
+  font-size: 15px;
+  line-height: 1.78;
+  font-weight: 300;
+  color: var(--grey-600);
+}
+
+/* ============================================================
+   THE DIFFERENCE
+   ============================================================ */
+.diffGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.diffQuote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--black);
+}
+
+.diffStatements {
+  border-top: 1px solid var(--grey-200);
+}
+
+.diffStatement {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.diffStatementLabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+
+.diffStatementText {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 1.2;
+}
+
+.diffStatementTextFinal {
+  composes: diffStatementText;
+  font-size: 22px;
+}
+
+.diffCoda {
+  margin-top: 28px;
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: 300;
+  color: var(--grey-600);
+}
+
+/* ============================================================
+   ACCESS / CTA
+   ============================================================ */
+.access {
+  padding: 120px 0;
+  background: var(--grey-50);
+}
+
+.accessInner {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 48px;
+  text-align: center;
+}
+
+.accessHeadline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(30px, 4vw, 50px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--black);
+}
+
+.accessSub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 300;
+  color: var(--grey-600);
+  margin-bottom: 52px;
+}
+
+.accessForm {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+}
+
+.accessInput {
+  flex: 1;
+  padding: 15px 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--black);
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-right: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none;
+}
+
+.accessInput:focus {
+  border-color: var(--black);
+}
+
+.accessInput::placeholder {
+  color: var(--grey-400);
+}
+
+.accessBtn {
+  padding: 15px 26px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  border-radius: 0 12px 12px 0;
+  border-left: none;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-appearance: none;
+}
+
+.accessNote {
+  font-size: 11px;
+  color: var(--grey-400);
+  letter-spacing: 0.06em;
+}
+
+.accessConfirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 52px;
+}
+
+.accessConfirmHeadline {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.accessConfirmSub {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--grey-600);
+}
+
+.accessTagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 300;
+  color: var(--grey-400);
+  margin-top: 52px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: 44px 0;
+  border-top: 1px solid var(--grey-200);
+}
+
+.footerInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.footerWordmark {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--black);
+}
+
+.footerCategory {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey-400);
+}
+
+.footerCopy {
+  font-size: 11px;
+  color: var(--grey-400);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   FADE-UP ANIMATIONS
+   ============================================================ */
+.fadeUp {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay1 { transition-delay: 0.12s; }
+.delay2 { transition-delay: 0.24s; }
+.delay3 { transition-delay: 0.36s; }
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+@media (max-width: 1024px) {
+  .navInner    { padding: 0 32px; }
+  .navCenter   { display: none; }
+  .container   { padding: 0 32px; }
+  .containerNarrow  { padding: 0 32px; }
+  .containerMedium  { padding: 0 32px; }
+  .heroInner   { padding: 64px 32px 80px; }
+  .fogGrid     { grid-template-columns: 1fr; gap: 48px; }
+  .diffGrid    { grid-template-columns: 1fr; gap: 48px; }
+  .pillarsGrid { grid-template-columns: 1fr; }
+  .pillar      { padding: 44px 0; }
+  .pillar + .pillar { padding-left: 0; border-left: none; border-top: 1px solid var(--grey-200); }
+  .footerInner { padding: 0 32px; }
+  .accessInner { padding: 0 32px; }
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  .section      { padding: 80px 0; }
+  .access       { padding: 80px 0; }
+  .navInner     { padding: 0 24px; height: 60px; }
+  .navCta       { font-size: 11px; padding: 8px 14px; }
+  .heroInner    { padding: 48px 24px 64px; }
+  .container    { padding: 0 24px; }
+  .containerNarrow  { padding: 0 24px; }
+  .containerMedium  { padding: 0 24px; }
+  .cardBody     { padding: 32px 24px; }
+  .cardHeader   { padding: 20px 24px; }
+  .cardFooter   { padding: 20px 24px; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .cardMetric   { padding: 20px 14px; }
+  .accessForm   { flex-direction: column; }
+  .accessInput  { border-right: 1px solid var(--grey-200); border-bottom: none; }
+  .accessBtn    { width: 100%; border-radius: 0 0 12px 12px; }
+  .accessInner  { padding: 0 24px; }
+  .footerInner  { flex-direction: column; gap: 20px; padding: 0 24px; text-align: center; }
+}

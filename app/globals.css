@@ -1,0 +1,722 @@
+@import 'tailwindcss';
+
+@property --btn-waitlist-rim-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Impact CTA: repeating conic border + glow (::before / ::after); angle via @property (see prefers-reduced-motion). */
+@property --join-impact-ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+@layer utilities {
+  @keyframes agent-line-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-agent-line-reveal {
+    animation: agent-line-reveal 0.65s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-agent-line-reveal {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /** One-shot when Agent card enters Executing (marketing demo). */
+  @keyframes agent-card-handoff {
+    0% {
+      box-shadow: none;
+      border-color: #e4e4e4;
+    }
+    40% {
+      box-shadow: 0 0 0 1px rgba(30, 58, 138, 0.2), 0 4px 20px rgba(76, 29, 149, 0.09);
+      border-color: #c7d2fe;
+    }
+    100% {
+      box-shadow: none;
+      border-color: #e4e4e4;
+    }
+  }
+
+  .animate-agent-card-handoff {
+    animation: agent-card-handoff 420ms ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-agent-card-handoff {
+      animation: none;
+    }
+  }
+
+  /* Impact footer — frosted gel / glass CTA (neutral chrome, no blue) */
+  .btn-gel-waitlist {
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.78) 0%,
+      rgba(244, 244, 245, 0.45) 45%,
+      rgba(212, 212, 216, 0.35) 100%
+    );
+    border: 1px solid rgba(10, 10, 10, 0.22);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+    transition:
+      box-shadow 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .btn-gel-waitlist:hover {
+    border-color: rgba(10, 10, 10, 0.32);
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(244, 244, 245, 0.6) 45%,
+      rgba(228, 228, 231, 0.5) 100%
+    );
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.06),
+      0 6px 16px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Waitlist modal — white frosted glass panel */
+  .modal-glass-waitlist-panel {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(255, 255, 255, 0.76) 45%,
+      rgba(250, 250, 250, 0.7) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+  }
+}
+
+/*
+ * Hero "See how it works" + demo tagline — unlayered (Tailwind cannot override).
+ * Sweep: bright red → dark blue / purple / green / orange → bright red.
+ */
+@keyframes seeHowGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-see-how-gradient,
+.animate-demo-tagline-gradient {
+  display: inline-block;
+  background: linear-gradient(
+    110deg,
+    #ef4444 0%,
+    #1e40af 20%,
+    #6b21a8 40%,
+    #166534 60%,
+    #9a3412 80%,
+    #ef4444 100%
+  );
+  background-size: 280% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.animate-see-how-gradient {
+  animation: seeHowGradientShift 3s ease-in-out infinite alternate;
+}
+
+.animate-demo-tagline-gradient {
+  animation: seeHowGradientShift 2.6s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-see-how-gradient,
+  .animate-demo-tagline-gradient {
+    animation: none !important;
+    background: none !important;
+    color: #0a0a0a !important;
+    -webkit-text-fill-color: #0a0a0a !important;
+  }
+}
+
+/* Difference section: sentence line scales slightly on row hover / focus */
+.diff-row-sentence {
+  display: inline-block;
+  transition: transform 0.18s ease;
+  transform-origin: left center;
+}
+
+.diff-contrast-row:hover .diff-row-sentence,
+.diff-contrast-row:focus-visible .diff-row-sentence {
+  transform: scale(1.045);
+}
+
+/* Difference section: "Not this" rows — hover / focus-visible, neutral only */
+.diff-row-not-this {
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  border-radius: 4px;
+}
+
+.diff-row-not-this:hover,
+.diff-row-not-this:focus-visible {
+  background-color: rgba(0, 0, 0, 0.07);
+  box-shadow:
+    inset 3px 0 0 0 rgba(10, 10, 10, 0.2),
+    0 2px 12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diff-row-sentence {
+    transition: none;
+  }
+
+  .diff-contrast-row:hover .diff-row-sentence,
+  .diff-contrast-row:focus-visible .diff-row-sentence {
+    transform: none;
+  }
+
+  .diff-row-not-this {
+    transition: background-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .diff-row-not-this:hover,
+  .diff-row-not-this:focus-visible {
+    transform: none;
+  }
+}
+
+/* Tradeoffs modal: revenue ($) column icon pulse */
+@keyframes tradeoffsMoneyIconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.tradeoffs-money-icon-pulse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: tradeoffsMoneyIconPulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tradeoffs-money-icon-pulse {
+    animation: none;
+  }
+}
+
+/* CTA: Explore delay impact — visible pulse (inner span; transform + opacity) */
+@keyframes exploreDelayImpactPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+}
+
+.explore-delay-impact-pulse {
+  display: inline-block;
+  transform-origin: center;
+  animation: exploreDelayImpactPulse 1.75s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explore-delay-impact-pulse {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.85s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.75s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes wordReveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-word-reveal {
+    animation: wordReveal 0.7s ease-out both;
+  }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  .animate-dot-pulse {
+    animation: dotPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes waitlistBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .animate-waitlist-blink {
+    animation: waitlistBlink 1.2s ease-in-out infinite;
+  }
+  @keyframes twBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .animate-tw-blink {
+    animation: twBlink 1s step-end infinite;
+  }
+  @keyframes strategicProductCard {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-strategic-product-card {
+    animation: strategicProductCard 0.9s ease-out both;
+  }
+  @keyframes demoChromeRise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .demo-chrome-rise-idle {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .animate-demo-chrome-rise {
+    animation: demoChromeRise 0.75s ease-out forwards;
+  }
+  .demo-browser-chrome {
+    width: 100%;
+  }
+  /** Confirmed card badge: ring draws closed, fill appears, then check stroke draws. */
+  @keyframes confirmedCircleRing {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .animate-confirmed-circle-ring {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: confirmedCircleRing 0.52s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  }
+  @keyframes confirmedBadgeFillIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .animate-confirmed-badge-fill {
+    opacity: 0;
+    animation: confirmedBadgeFillIn 0.22s ease-out 0.5s forwards;
+  }
+  @keyframes confirmedCheckDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .animate-confirmed-check-path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: confirmedCheckDraw 0.4s cubic-bezier(0.33, 1, 0.68, 1) 0.76s forwards;
+  }
+  @keyframes userMoveFramedCloseSweep {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  /** One-shot fill when Close completes after confirm. */
+  .animate-user-move-framed-close-sweep {
+    animation: userMoveFramedCloseSweep 0.65s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+    transform-origin: left center;
+  }
+  /** Looping stretch Framed→Close while Close is still pending (before confirm). */
+  .animate-user-move-framed-close-pending {
+    animation: userMoveFramedCloseSweep 1.35s cubic-bezier(0.33, 1, 0.68, 1) infinite alternate;
+    transform-origin: left center;
+  }
+  @keyframes ctaArrowNudge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+  .animate-cta-arrow-nudge {
+    animation: ctaArrowNudge 1.4s ease-in-out infinite;
+  }
+  @keyframes btnGelWaitlistShift {
+    0%, 100% { background-position: 0% 50%, center; }
+    50% { background-position: 100% 50%, center; }
+  }
+  .btn-gel-waitlist.btn-gel-waitlist-animated {
+    background:
+      linear-gradient(
+        165deg,
+        rgba(18, 18, 20, 0.96) 0%,
+        rgba(28, 28, 32, 0.92) 45%,
+        rgba(12, 12, 14, 0.94) 100%
+      ),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    background-size: 200% 200%, 100% 100%;
+    background-position: 0% 50%, center;
+    animation: btnGelWaitlistShift 14s ease-in-out infinite;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f4f4f5;
+  }
+  .btn-gel-waitlist.btn-gel-waitlist-animated:hover {
+    animation-play-state: paused;
+  }
+
+  /** Impact panel — Join Waitlist: animated rainbow repeating-conic border (::before only, no glow). */
+  @keyframes joinImpactRingRotate {
+    0% {
+      --join-impact-ring-angle: 0deg;
+    }
+    100% {
+      --join-impact-ring-angle: 360deg;
+    }
+  }
+  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated {
+    --join-impact-ring-angle: 0deg;
+    --join-impact-ring-border: 1px;
+    --join-impact-ring-outer-r: 20px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--join-impact-ring-border);
+    border: none !important;
+    border-radius: var(--join-impact-ring-outer-r);
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    animation: none !important;
+    isolation: isolate;
+  }
+  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: repeating-conic-gradient(
+      from var(--join-impact-ring-angle),
+      #ff0000,
+      #ff7f00,
+      #ffff00,
+      #00ff00,
+      #00ffff,
+      #0000ff,
+      #8b00ff,
+      #ff0000
+    );
+    animation: joinImpactRingRotate 4s linear infinite;
+    pointer-events: none;
+  }
+  .join-waitlist-impact-ring.btn-gel-waitlist:hover::before {
+    animation-play-state: paused;
+  }
+  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated .join-waitlist-impact-ring-inner {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: calc(var(--join-impact-ring-outer-r) - var(--join-impact-ring-border));
+    color: #ffffff;
+    white-space: nowrap;
+    font: inherit;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background:
+      linear-gradient(
+        165deg,
+        rgba(18, 18, 20, 0.96) 0%,
+        rgba(28, 28, 32, 0.92) 45%,
+        rgba(12, 12, 14, 0.94) 100%
+      ),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    background-size: 200% 200%, 100% 100%;
+    background-position: 0% 50%, center;
+    animation: btnGelWaitlistShift 14s ease-in-out infinite;
+  }
+  .join-waitlist-impact-ring.btn-gel-waitlist:hover .join-waitlist-impact-ring-inner {
+    animation-play-state: paused;
+    background:
+      linear-gradient(
+        165deg,
+        rgba(28, 28, 32, 0.98) 0%,
+        rgba(36, 36, 40, 0.95) 45%,
+        rgba(20, 20, 24, 0.96) 100%
+      ),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+    background-size: 200% 200%, 100% 100%;
+    background-position: 0% 50%, center;
+  }
+
+  /** Nav CTA — same rainbow ring, compact (matches prior 12px radius / 10×16 label padding). */
+  .join-waitlist-impact-ring.join-waitlist-impact-ring--nav.btn-gel-waitlist.btn-gel-waitlist-animated {
+    --join-impact-ring-outer-r: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .join-waitlist-impact-ring.join-waitlist-impact-ring--nav.btn-gel-waitlist.btn-gel-waitlist-animated
+    .join-waitlist-impact-ring-inner {
+    padding: 10px 16px;
+  }
+
+  /** Access / email form submit — rainbow ring (1px, same as other CTAs); left edge square to meet input. */
+  .join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated {
+    --join-impact-ring-border: 1px;
+    border-radius: 0 12px 12px 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated
+    .join-waitlist-impact-ring-inner {
+    padding: 14px 24px;
+    border-radius: 0 calc(12px - var(--join-impact-ring-border)) calc(12px - var(--join-impact-ring-border)) 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-fade-up,
+    .animate-word-reveal,
+    .animate-strategic-product-card,
+    .animate-demo-chrome-rise,
+    .animate-dot-pulse,
+    .animate-waitlist-blink,
+    .animate-tw-blink,
+    .animate-cta-arrow-nudge {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .animate-confirmed-circle-ring,
+    .animate-confirmed-check-path {
+      animation: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+    .animate-confirmed-badge-fill {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+    .demo-chrome-rise-idle {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .btn-gel-waitlist.btn-gel-waitlist-animated {
+      animation: none;
+    }
+    .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated::before {
+      animation: none !important;
+      background: repeating-conic-gradient(
+        from 0deg,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #00ffff,
+        #0000ff,
+        #8b00ff,
+        #ff0000
+      ) !important;
+    }
+    .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated .join-waitlist-impact-ring-inner {
+      animation: none !important;
+    }
+    .animate-user-move-framed-close-sweep {
+      animation: none !important;
+      transform: scaleX(1) !important;
+    }
+    .animate-user-move-framed-close-pending {
+      animation: none !important;
+      transform: scaleX(0) !important;
+    }
+  }
+}
+
+/* Landing: horizontal gutters + safe areas (replaces fragile inline padding hacks) */
+.site-gutter {
+  box-sizing: border-box;
+  padding-left: calc(clamp(16px, 4.2vw, 48px) + env(safe-area-inset-left, 0px));
+  padding-right: calc(clamp(16px, 4.2vw, 48px) + env(safe-area-inset-right, 0px));
+}
+
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(8px, 2.4vw, 24px);
+}
+
+.site-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .site-footer-bar {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.tradeoffs-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .tradeoffs-modal-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .tradeoffs-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.impact-metrics-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .impact-metrics-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.access-form-row {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Email Get In Now — explicit 1px ring (unlayered; matches global token). */
+.access-form-row .access-form-submit.join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated {
+  --join-impact-ring-border: 1px;
+}
+
+@media (max-width: 480px) {
+  .access-form-row {
+    flex-direction: column;
+  }
+
+  .access-form-row .access-form-input {
+    border-radius: 8px 8px 0 0;
+    border-right: 1px solid #e4e4e4;
+    width: 100%;
+  }
+
+  .access-form-row .access-form-submit {
+    border-radius: 0 0 8px 8px;
+    width: 100%;
+  }
+
+  .access-form-row .access-form-submit.join-waitlist-impact-ring--access-form .join-waitlist-impact-ring-inner {
+    border-radius: 0 0 calc(8px - var(--join-impact-ring-border)) calc(8px - var(--join-impact-ring-border));
+  }
+}
+
+@media (max-width: 480px) {
+  .diff-contrast-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
