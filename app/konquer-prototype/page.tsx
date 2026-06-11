@@ -8,8 +8,8 @@ type AppView = 'home' | 'insights' | 'leverage' | 'team' | 'decisions';
 type MoveState = 'stories' | 'idle' | 'context' | 'committed' | 'feedback' | 'win' | 'learn';
 
 const MOVE = {
-  action: 'Raise your price floor to $25K today so next quarter\'s pipeline is built on real margin.',
-  why: "This closes faster than anything on your board right now. Sarah\'s been responsive, the contract\'s ready, and your window is today. Locking this in protects your monthly number and frees your focus for growth moves the rest of the week.",
+  action: "Raise your price floor to $25K today so next quarter's pipeline is built on real margin.",
+  why: "This closes faster than anything on your board right now. Sarah's been responsive, the contract's ready, and your window is today. Locking this in protects your monthly number and frees your focus for growth moves the rest of the week.",
   metrics: [
     { value: '$18K', label: 'Revenue' },
     { value: '30 min', label: 'Time' },

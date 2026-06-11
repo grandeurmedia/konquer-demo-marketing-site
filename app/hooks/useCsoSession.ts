@@ -137,7 +137,7 @@ export function useCsoSession({
 
       addMessage({
         agent:   'kong',
-        content: data.kong_summary || 'Here's the strategic plan.',
+        content: data.kong_summary || "Here's the strategic plan.",
         ts:      Date.now(),
       });
 
