@@ -6,8 +6,8 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { RequestInviteModal } from '@/components/request-invite/RequestInviteModal';
+import { RedeemInviteModal } from '@/components/redeem-invite/RedeemInviteModal';
 import { MemberLoginModal } from '@/components/member-login/MemberLoginModal';
 
 /* ─── Demo animation constants (unchanged from original) ─── */
@@ -156,6 +156,13 @@ const ROTATING_WORDS = [
   'Velocity.',
   'Leverage.',
   'Scale.',
+  'Time Saved.',
+  'Visibility.',
+  'Profit.',
+  'Revenue.',
+  'Compounding.',
+  'Focus.',
+  'Margin.',
 ] as const;
 
 const TYPEWRITER_CHAR_MS = 55;
@@ -259,6 +266,7 @@ export default function LandingPageSandbox() {
   /* ─── Demo state (all reused from original) ─── */
   const [showTradeoffsModal, setShowTradeoffsModal] = useState(false);
   const [showRequestInviteModal, setShowRequestInviteModal] = useState(false);
+  const [showRedeemInviteModal, setShowRedeemInviteModal] = useState(false);
   const [showMemberLoginModal, setShowMemberLoginModal] = useState(false);
   const [demoState, setDemoState] = useState<DemoPhase>('idle');
   const [committedViewPhase, setCommittedViewPhase] = useState<CommittedViewPhase>('confirmed_only');
@@ -756,21 +764,18 @@ export default function LandingPageSandbox() {
             <button
               type="button"
               onClick={() => setShowMemberLoginModal(true)}
+              className="nav-member-login"
               style={{
                 fontSize: '14px',
                 fontWeight: 500,
-                color: '#5C5C5C',
                 textDecoration: 'none',
                 letterSpacing: '-0.01em',
-                transition: 'color .2s ease',
                 background: 'none',
                 border: 'none',
                 padding: 0,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = '#0A0A0A'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = '#5C5C5C'; }}
             >
               Member Login
             </button>
@@ -971,8 +976,9 @@ export default function LandingPageSandbox() {
             </span>
           </button>
 
-          <Link
-            href="/redeem"
+          <button
+            type="button"
+            onClick={() => setShowRedeemInviteModal(true)}
             style={{
               fontSize: '13px',
               fontWeight: 400,
@@ -980,12 +986,17 @@ export default function LandingPageSandbox() {
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
               marginTop: '6px',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
             }}
           >
             <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
               Have an invite code?
             </span>
-          </Link>
+          </button>
 
           <span
             style={{
@@ -2027,8 +2038,9 @@ export default function LandingPageSandbox() {
                             Request Invite
                           </span>
                         </button>
-                        <Link
-                          href="/redeem"
+                        <button
+                          type="button"
+                          onClick={() => setShowRedeemInviteModal(true)}
                           style={{
                             fontSize: '13px',
                             fontWeight: 400,
@@ -2036,12 +2048,17 @@ export default function LandingPageSandbox() {
                             textDecoration: 'underline',
                             textUnderlineOffset: '3px',
                             marginTop: '4px',
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
                           }}
                         >
                           <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
                             Have an invite code?
                           </span>
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   )}
@@ -2501,8 +2518,9 @@ export default function LandingPageSandbox() {
                 Request Invite
               </span>
             </button>
-            <Link
-              href="/redeem"
+            <button
+              type="button"
+              onClick={() => setShowRedeemInviteModal(true)}
               style={{
                 fontSize: '13px',
                 fontWeight: 400,
@@ -2510,12 +2528,17 @@ export default function LandingPageSandbox() {
                 textDecoration: 'underline',
                 textUnderlineOffset: '3px',
                 marginTop: '6px',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
               }}
             >
               <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
                 Have an invite code?
               </span>
-            </Link>
+            </button>
             <span
               style={{
                 fontSize: '13px',
@@ -2577,7 +2600,7 @@ export default function LandingPageSandbox() {
             </span>
           </div>
           <span style={{ fontSize: '11px', fontWeight: 300, color: '#9C9C9C' }}>
-            © {new Date().getFullYear()} Konquer. All rights reserved.
+            © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Konquer. All rights reserved.
           </span>
         </div>
       </footer>
@@ -2742,6 +2765,7 @@ export default function LandingPageSandbox() {
       )}
 
       <RequestInviteModal open={showRequestInviteModal} onClose={() => setShowRequestInviteModal(false)} />
+      <RedeemInviteModal open={showRedeemInviteModal} onClose={() => setShowRedeemInviteModal(false)} />
       <MemberLoginModal open={showMemberLoginModal} onClose={() => setShowMemberLoginModal(false)} />
 
       {/* ═══════════════════════════════════════════
