@@ -402,7 +402,7 @@ export default function KonquerLanding(): React.JSX.Element {
                 </button>
               </form>
               <p className={styles.accessNote}>
-                Early access only. The clock is running.
+                Konquer is built for founders already generating $500K+ a year.
               </p>
             </div>
           ) : (

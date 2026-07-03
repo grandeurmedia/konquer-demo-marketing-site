@@ -324,11 +324,11 @@
     animation: dotPulse 1.4s ease-in-out infinite;
   }
   @keyframes waitlistBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    0%, 62%, 100% { opacity: 1; }
+    78% { opacity: 0.4; }
   }
   .animate-waitlist-blink {
-    animation: waitlistBlink 1.2s ease-in-out infinite;
+    animation: waitlistBlink 3.2s ease-in-out infinite;
   }
   @keyframes twBlink {
     0%, 49% { opacity: 1; }
@@ -435,7 +435,7 @@
     animation-play-state: paused;
   }
 
-  /** Impact panel — Join Waitlist: animated rainbow repeating-conic border (::before only, no glow). */
+  /** Impact panel CTA: animated rainbow repeating-conic border (::before only, no glow). */
   @keyframes joinImpactRingRotate {
     0% {
       --join-impact-ring-angle: 0deg;
@@ -687,7 +687,7 @@
   min-width: 0;
 }
 
-/* Email Get In Now — explicit 1px ring (unlayered; matches global token). */
+/* Email access CTA — explicit 1px ring (unlayered; matches global token). */
 .access-form-row .access-form-submit.join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated {
   --join-impact-ring-border: 1px;
 }

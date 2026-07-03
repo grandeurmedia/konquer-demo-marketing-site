@@ -194,59 +194,11 @@ const DIFF_ITEMS = [
   { label: 'This', text: 'One move. Auditable certainty. Every day.' },
 ];
 
-/** Early-access countdown: first cycle ends here; epoch = END − D (30-day cycles). */
-const ACCESS_COUNTDOWN_END_MS = Date.parse('2026-05-29T12:00:00-05:00');
-
-/** Length of each repeating countdown cycle; first cycle still ends at `ACCESS_COUNTDOWN_END_MS`. */
-const ACCESS_COUNTDOWN_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
-
-const ACCESS_COUNTDOWN_EPOCH_MS = ACCESS_COUNTDOWN_END_MS - ACCESS_COUNTDOWN_DURATION_MS;
-
-/** Same red as nav "Waitlist Open!" */
+/** Same red used for invitation-only labels. */
 const WAITLIST_OPEN_RED = '#E57373';
 
 /** Strong red for Cost of Delay Impact (not waitlist salmon). */
 const COST_OF_DELAY_RED = '#C62828';
-
-/** Fast tick for milliseconds display; 1s when reduced motion. */
-const ACCESS_COUNTDOWN_TICK_MS = 10;
-
-function getAccessCountdownParts(ms: number): {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  millis: number;
-} {
-  const clamped = Math.max(0, ms);
-  const totalSec = Math.floor(clamped / 1000);
-  const days = Math.floor(totalSec / 86400);
-  const secAfterDay = totalSec % 86400;
-  return {
-    days,
-    hours: Math.floor(secAfterDay / 3600),
-    minutes: Math.floor((secAfterDay % 3600) / 60),
-    seconds: secAfterDay % 60,
-    millis: Math.floor(clamped % 1000),
-  };
-}
-
-function formatAccessCountdown(ms: number): string {
-  const { days, hours, minutes, seconds, millis } = getAccessCountdownParts(ms);
-  const dd = String(days).padStart(2, '0');
-  const hh = String(hours).padStart(2, '0');
-  const mm = String(minutes).padStart(2, '0');
-  const ss = String(seconds).padStart(2, '0');
-  const mmm = String(millis).padStart(3, '0');
-  return `${dd}d ${hh}h ${mm}m ${ss}s ${mmm}ms`;
-}
-
-function getAccessCycleRemainingMs(now: number): number {
-  const d = ACCESS_COUNTDOWN_DURATION_MS;
-  const elapsed = now - ACCESS_COUNTDOWN_EPOCH_MS;
-  const cycleEnd = ACCESS_COUNTDOWN_EPOCH_MS + (Math.floor(elapsed / d) + 1) * d;
-  return Math.max(0, cycleEnd - now);
-}
 
 export default function LandingPageSandbox() {
   /* ─── Nav scroll ─── */
@@ -278,20 +230,6 @@ export default function LandingPageSandbox() {
   /* ─── Access form ─── */
   const [email, setEmail] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
-  /** null until after mount so SSR/prerender HTML matches client (no Date.now() mismatch). */
-  const [accessRemainingMs, setAccessRemainingMs] = useState<number | null>(null);
-
-  useEffect(() => {
-    const tick = () => {
-      setAccessRemainingMs(getAccessCycleRemainingMs(Date.now()));
-    };
-    tick();
-    const reduced =
-      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const intervalMs = reduced ? 1000 : ACCESS_COUNTDOWN_TICK_MS;
-    const id = window.setInterval(tick, intervalMs);
-    return () => window.clearInterval(id);
-  }, []);
 
   /* ─── Hero rotating typewriter (certainty / clarity / …) — starts after headline + fog paragraph ─── */
   const [twWordIndex, setTwWordIndex] = useState(0);
@@ -708,9 +646,6 @@ export default function LandingPageSandbox() {
     }, CLOSE_CONFETTI_TO_LINE_MS);
   };
 
-  const accessCountdownParts = getAccessCountdownParts(accessRemainingMs ?? 0);
-  const accessCountdownDisplay = formatAccessCountdown(accessRemainingMs ?? 0);
-
   return (
     <div
       className="min-h-screen bg-white text-black overflow-x-hidden"
@@ -771,7 +706,7 @@ export default function LandingPageSandbox() {
                   flexShrink: 0,
                 }}
               />
-              <span>Waitlist Open!</span>
+              <span>Konquer is invitation-only.</span>
             </span>
           </div>
 
@@ -788,7 +723,7 @@ export default function LandingPageSandbox() {
                 fontFamily: 'inherit',
               }}
             >
-              <span className="join-waitlist-impact-ring-inner">Get In Now!</span>
+              <span className="join-waitlist-impact-ring-inner">Request Invite</span>
             </button>
           </div>
         </div>
@@ -1955,9 +1890,21 @@ export default function LandingPageSandbox() {
                           className="btn-gel-waitlist btn-gel-waitlist-animated join-waitlist-impact-ring"
                         >
                           <span className="join-waitlist-impact-ring-inner">
-                            Join Waitlist Now
+                            Request Invite
                           </span>
                         </button>
+                        <a
+                          href="#access"
+                          style={{
+                            fontSize: '12px',
+                            fontWeight: 500,
+                            color: '#6C6C6C',
+                            textDecoration: 'underline',
+                            textUnderlineOffset: '3px',
+                          }}
+                        >
+                          Have an invite code?
+                        </a>
                       </div>
                     </div>
                   )}
@@ -2398,7 +2345,7 @@ export default function LandingPageSandbox() {
                 if (email.trim()) setFormSubmitted(true);
               }}
               className="access-form-row"
-              style={{ gap: '0', marginBottom: '20px' }}
+              style={{ gap: '0', marginBottom: '8px' }}
             >
               <input
                 type="email"
@@ -2432,13 +2379,30 @@ export default function LandingPageSandbox() {
                   fontFamily: 'inherit',
                 }}
               >
-                <span className="join-waitlist-impact-ring-inner">Get In Now!</span>
+                <span className="join-waitlist-impact-ring-inner">Request Invite</span>
               </button>
             </form>
           )}
 
+          {!formSubmitted && (
+            <a
+              href="#access"
+              style={{
+                display: 'inline-block',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#6C6C6C',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                marginBottom: '20px',
+              }}
+            >
+              Have an invite code?
+            </a>
+          )}
+
           <p style={{ fontSize: '12px', fontWeight: 300, color: '#9C9C9C', letterSpacing: '.04em', marginBottom: '8px' }}>
-            Early access only. The clock is running.
+            Konquer is built for founders already generating $500K+ a year.
           </p>
 
           <p
@@ -2455,36 +2419,6 @@ export default function LandingPageSandbox() {
             Know the move!
           </p>
 
-          <p
-            role="timer"
-            aria-live="polite"
-            aria-busy={accessRemainingMs === null}
-            aria-label={
-              accessRemainingMs === null
-                ? 'Loading countdown'
-                : `Time remaining in this early access cycle: ${accessCountdownDisplay}`
-            }
-            style={{
-              marginTop: 'clamp(28px, 3.5vh, 44px)',
-              marginBottom: 0,
-              fontSize: 'clamp(20px, 3vw, 32px)',
-              fontWeight: 300,
-              color: WAITLIST_OPEN_RED,
-              fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '-0.01em',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'baseline',
-              flexWrap: 'wrap',
-              gap: 'clamp(12px, 3vw, 28px)',
-            }}
-          >
-            <span>{String(accessCountdownParts.days).padStart(2, '0')}d</span>
-            <span>{String(accessCountdownParts.hours).padStart(2, '0')}h</span>
-            <span>{String(accessCountdownParts.minutes).padStart(2, '0')}m</span>
-            <span>{String(accessCountdownParts.seconds).padStart(2, '0')}s</span>
-            <span>{String(accessCountdownParts.millis).padStart(3, '0')}ms</span>
-          </p>
         </div>
       </section>
 
