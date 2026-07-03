@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@property --btn-waitlist-rim-angle {
+@property --btn-invite-rim-angle {
   syntax: '<angle>';
   inherits: false;
   initial-value: 0deg;
@@ -86,7 +86,7 @@
   }
 
   /* Impact footer — frosted gel / glass CTA (neutral chrome, no blue) */
-  .btn-gel-waitlist {
+  .btn-gel-invite {
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     background: linear-gradient(
@@ -107,7 +107,7 @@
       border-color 0.2s ease;
   }
 
-  .btn-gel-waitlist:hover {
+  .btn-gel-invite:hover {
     border-color: rgba(10, 10, 10, 0.32);
     background: linear-gradient(
       165deg,
@@ -122,8 +122,8 @@
       inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   }
 
-  /* Waitlist modal — white frosted glass panel */
-  .modal-glass-waitlist-panel {
+  /* Request Invite modal — white frosted glass panel */
+  .modal-glass-invite-panel {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     background: linear-gradient(
@@ -323,12 +323,12 @@
   .animate-dot-pulse {
     animation: dotPulse 1.4s ease-in-out infinite;
   }
-  @keyframes waitlistBlink {
-    0%, 62%, 100% { opacity: 1; }
-    78% { opacity: 0.4; }
+  @keyframes inviteBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
-  .animate-waitlist-blink {
-    animation: waitlistBlink 3.2s ease-in-out infinite;
+  .animate-invite-blink {
+    animation: inviteBlink 1.2s ease-in-out infinite;
   }
   @keyframes twBlink {
     0%, 49% { opacity: 1; }
@@ -412,11 +412,11 @@
   .animate-cta-arrow-nudge {
     animation: ctaArrowNudge 1.4s ease-in-out infinite;
   }
-  @keyframes btnGelWaitlistShift {
+  @keyframes btnGelInviteShift {
     0%, 100% { background-position: 0% 50%, center; }
     50% { background-position: 100% 50%, center; }
   }
-  .btn-gel-waitlist.btn-gel-waitlist-animated {
+  .btn-gel-invite.btn-gel-invite-animated {
     background:
       linear-gradient(
         165deg,
@@ -427,15 +427,15 @@
       linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
     background-size: 200% 200%, 100% 100%;
     background-position: 0% 50%, center;
-    animation: btnGelWaitlistShift 14s ease-in-out infinite;
+    animation: btnGelInviteShift 14s ease-in-out infinite;
     border-color: rgba(255, 255, 255, 0.12);
     color: #f4f4f5;
   }
-  .btn-gel-waitlist.btn-gel-waitlist-animated:hover {
+  .btn-gel-invite.btn-gel-invite-animated:hover {
     animation-play-state: paused;
   }
 
-  /** Impact panel CTA: animated rainbow repeating-conic border (::before only, no glow). */
+  /** Impact panel — Request Invite: animated rainbow repeating-conic border (::before only, no glow). */
   @keyframes joinImpactRingRotate {
     0% {
       --join-impact-ring-angle: 0deg;
@@ -444,7 +444,7 @@
       --join-impact-ring-angle: 360deg;
     }
   }
-  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated {
+  .request-invite-impact-ring.btn-gel-invite.btn-gel-invite-animated {
     --join-impact-ring-angle: 0deg;
     --join-impact-ring-border: 1px;
     --join-impact-ring-outer-r: 20px;
@@ -467,7 +467,7 @@
     animation: none !important;
     isolation: isolate;
   }
-  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated::before {
+  .request-invite-impact-ring.btn-gel-invite.btn-gel-invite-animated::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -487,10 +487,10 @@
     animation: joinImpactRingRotate 4s linear infinite;
     pointer-events: none;
   }
-  .join-waitlist-impact-ring.btn-gel-waitlist:hover::before {
+  .request-invite-impact-ring.btn-gel-invite:hover::before {
     animation-play-state: paused;
   }
-  .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated .join-waitlist-impact-ring-inner {
+  .request-invite-impact-ring.btn-gel-invite.btn-gel-invite-animated .request-invite-impact-ring-inner {
     position: relative;
     z-index: 1;
     display: inline-flex;
@@ -515,9 +515,9 @@
       linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
     background-size: 200% 200%, 100% 100%;
     background-position: 0% 50%, center;
-    animation: btnGelWaitlistShift 14s ease-in-out infinite;
+    animation: btnGelInviteShift 14s ease-in-out infinite;
   }
-  .join-waitlist-impact-ring.btn-gel-waitlist:hover .join-waitlist-impact-ring-inner {
+  .request-invite-impact-ring.btn-gel-invite:hover .request-invite-impact-ring-inner {
     animation-play-state: paused;
     background:
       linear-gradient(
@@ -532,27 +532,27 @@
   }
 
   /** Nav CTA — same rainbow ring, compact (matches prior 12px radius / 10×16 label padding). */
-  .join-waitlist-impact-ring.join-waitlist-impact-ring--nav.btn-gel-waitlist.btn-gel-waitlist-animated {
+  .request-invite-impact-ring.request-invite-impact-ring--nav.btn-gel-invite.btn-gel-invite-animated {
     --join-impact-ring-outer-r: 12px;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.06em;
   }
-  .join-waitlist-impact-ring.join-waitlist-impact-ring--nav.btn-gel-waitlist.btn-gel-waitlist-animated
-    .join-waitlist-impact-ring-inner {
+  .request-invite-impact-ring.request-invite-impact-ring--nav.btn-gel-invite.btn-gel-invite-animated
+    .request-invite-impact-ring-inner {
     padding: 10px 16px;
   }
 
   /** Access / email form submit — rainbow ring (1px, same as other CTAs); left edge square to meet input. */
-  .join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated {
+  .request-invite-impact-ring.request-invite-impact-ring--access-form.btn-gel-invite.btn-gel-invite-animated {
     --join-impact-ring-border: 1px;
     border-radius: 0 12px 12px 0;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
   }
-  .join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated
-    .join-waitlist-impact-ring-inner {
+  .request-invite-impact-ring.request-invite-impact-ring--access-form.btn-gel-invite.btn-gel-invite-animated
+    .request-invite-impact-ring-inner {
     padding: 14px 24px;
     border-radius: 0 calc(12px - var(--join-impact-ring-border)) calc(12px - var(--join-impact-ring-border)) 0;
   }
@@ -564,7 +564,7 @@
     .animate-strategic-product-card,
     .animate-demo-chrome-rise,
     .animate-dot-pulse,
-    .animate-waitlist-blink,
+    .animate-invite-blink,
     .animate-tw-blink,
     .animate-cta-arrow-nudge {
       animation: none !important;
@@ -584,10 +584,10 @@
       opacity: 1 !important;
       transform: none !important;
     }
-    .btn-gel-waitlist.btn-gel-waitlist-animated {
+    .btn-gel-invite.btn-gel-invite-animated {
       animation: none;
     }
-    .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated::before {
+    .request-invite-impact-ring.btn-gel-invite.btn-gel-invite-animated::before {
       animation: none !important;
       background: repeating-conic-gradient(
         from 0deg,
@@ -601,7 +601,7 @@
         #ff0000
       ) !important;
     }
-    .join-waitlist-impact-ring.btn-gel-waitlist.btn-gel-waitlist-animated .join-waitlist-impact-ring-inner {
+    .request-invite-impact-ring.btn-gel-invite.btn-gel-invite-animated .request-invite-impact-ring-inner {
       animation: none !important;
     }
     .animate-user-move-framed-close-sweep {
@@ -687,8 +687,8 @@
   min-width: 0;
 }
 
-/* Email access CTA — explicit 1px ring (unlayered; matches global token). */
-.access-form-row .access-form-submit.join-waitlist-impact-ring.join-waitlist-impact-ring--access-form.btn-gel-waitlist.btn-gel-waitlist-animated {
+/* Email Get In Now — explicit 1px ring (unlayered; matches global token). */
+.access-form-row .access-form-submit.request-invite-impact-ring.request-invite-impact-ring--access-form.btn-gel-invite.btn-gel-invite-animated {
   --join-impact-ring-border: 1px;
 }
 
@@ -708,7 +708,7 @@
     width: 100%;
   }
 
-  .access-form-row .access-form-submit.join-waitlist-impact-ring--access-form .join-waitlist-impact-ring-inner {
+  .access-form-row .access-form-submit.request-invite-impact-ring--access-form .request-invite-impact-ring-inner {
     border-radius: 0 0 calc(8px - var(--join-impact-ring-border)) calc(8px - var(--join-impact-ring-border));
   }
 }

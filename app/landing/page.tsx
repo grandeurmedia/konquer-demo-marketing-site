@@ -66,7 +66,7 @@ function DiffStatement({ label, text }: DiffStatementProps) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function KonquerLanding(): React.JSX.Element {
+export default function KonquerLanding() {
   const [isScrolled, setIsScrolled]       = useState<boolean>(false);
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [email, setEmail]                 = useState<string>('');
@@ -396,13 +396,13 @@ export default function KonquerLanding(): React.JSX.Element {
                 />
                 <button
                   type="submit"
-                  className={`${styles.accessBtn} btn-gel-waitlist btn-gel-waitlist-animated`}
+                  className={`${styles.accessBtn} btn-gel-invite btn-gel-invite-animated`}
                 >
                   Get in now →
                 </button>
               </form>
               <p className={styles.accessNote}>
-                Konquer is built for founders already generating $500K+ a year.
+                Early access only. The clock is running.
               </p>
             </div>
           ) : (

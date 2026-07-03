@@ -1,12 +1,14 @@
 'use client';
 
 /**
- * Primary marketing landing: waitlist, countdown, and interactive demo.
+ * Primary marketing landing: invite request, countdown, and interactive demo.
  * Route: /
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { WaitlistModal } from '@/components/waitlist/WaitlistModal';
+import Link from 'next/link';
+import { RequestInviteModal } from '@/components/request-invite/RequestInviteModal';
+import { MemberLoginModal } from '@/components/member-login/MemberLoginModal';
 
 /* ─── Demo animation constants (unchanged from original) ─── */
 const TRADEOFFS_FINAL_STEP = 6;
@@ -121,7 +123,7 @@ const IMPACT_REVENUE_END_K = 18;
 const IMPACT_REVENUE_COUNT_MS = 650;
 
 /* ─── Hero headline words ─── */
-const HEADLINE_WORDS = ['One', 'Move.', 'Total', 'Clarity.'];
+const HEADLINE_WORDS = ['One', 'Move.', 'More'];
 
 /** Primary accent (demo metrics, icons) — slightly darker than prior #1548FF */
 const ACCENT_BLUE = '#0E3AD6';
@@ -140,6 +142,7 @@ const USER_MOVE_MOMENTUM_COMPLETE_GREEN = USER_MOVE_LAST_BEAT_GREEN;
 const TYPEWRITER_COLOR = '#1d9db2';
 
 const ROTATING_WORDS = [
+  'Clarity.',
   'Certainty.',
   'Momentum.',
   'Reassurance.',
@@ -152,6 +155,7 @@ const ROTATING_WORDS = [
   'Execution.',
   'Velocity.',
   'Leverage.',
+  'Scale.',
 ] as const;
 
 const TYPEWRITER_CHAR_MS = 55;
@@ -194,11 +198,59 @@ const DIFF_ITEMS = [
   { label: 'This', text: 'One move. Auditable certainty. Every day.' },
 ];
 
-/** Same red used for invitation-only labels. */
-const WAITLIST_OPEN_RED = '#E57373';
+/** Early-access countdown: first cycle ends here; epoch = END − D (30-day cycles). */
+const ACCESS_COUNTDOWN_END_MS = Date.parse('2026-05-29T12:00:00-05:00');
 
-/** Strong red for Cost of Delay Impact (not waitlist salmon). */
+/** Length of each repeating countdown cycle; first cycle still ends at `ACCESS_COUNTDOWN_END_MS`. */
+const ACCESS_COUNTDOWN_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
+
+const ACCESS_COUNTDOWN_EPOCH_MS = ACCESS_COUNTDOWN_END_MS - ACCESS_COUNTDOWN_DURATION_MS;
+
+/** Cost of Delay Impact label red (used in the tradeoffs modal). */
+const DELAY_IMPACT_RED = '#E57373';
+
+/** Strong red for Cost of Delay Impact (not the salmon tint used elsewhere). */
 const COST_OF_DELAY_RED = '#C62828';
+
+/** Fast tick for milliseconds display; 1s when reduced motion. */
+const ACCESS_COUNTDOWN_TICK_MS = 10;
+
+function getAccessCountdownParts(ms: number): {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  millis: number;
+} {
+  const clamped = Math.max(0, ms);
+  const totalSec = Math.floor(clamped / 1000);
+  const days = Math.floor(totalSec / 86400);
+  const secAfterDay = totalSec % 86400;
+  return {
+    days,
+    hours: Math.floor(secAfterDay / 3600),
+    minutes: Math.floor((secAfterDay % 3600) / 60),
+    seconds: secAfterDay % 60,
+    millis: Math.floor(clamped % 1000),
+  };
+}
+
+function formatAccessCountdown(ms: number): string {
+  const { days, hours, minutes, seconds, millis } = getAccessCountdownParts(ms);
+  const dd = String(days).padStart(2, '0');
+  const hh = String(hours).padStart(2, '0');
+  const mm = String(minutes).padStart(2, '0');
+  const ss = String(seconds).padStart(2, '0');
+  const mmm = String(millis).padStart(3, '0');
+  return `${dd}d ${hh}h ${mm}m ${ss}s ${mmm}ms`;
+}
+
+function getAccessCycleRemainingMs(now: number): number {
+  const d = ACCESS_COUNTDOWN_DURATION_MS;
+  const elapsed = now - ACCESS_COUNTDOWN_EPOCH_MS;
+  const cycleEnd = ACCESS_COUNTDOWN_EPOCH_MS + (Math.floor(elapsed / d) + 1) * d;
+  return Math.max(0, cycleEnd - now);
+}
 
 export default function LandingPageSandbox() {
   /* ─── Nav scroll ─── */
@@ -206,7 +258,8 @@ export default function LandingPageSandbox() {
 
   /* ─── Demo state (all reused from original) ─── */
   const [showTradeoffsModal, setShowTradeoffsModal] = useState(false);
-  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [showRequestInviteModal, setShowRequestInviteModal] = useState(false);
+  const [showMemberLoginModal, setShowMemberLoginModal] = useState(false);
   const [demoState, setDemoState] = useState<DemoPhase>('idle');
   const [committedViewPhase, setCommittedViewPhase] = useState<CommittedViewPhase>('confirmed_only');
   const [agentSheetEntered, setAgentSheetEntered] = useState(false);
@@ -227,9 +280,20 @@ export default function LandingPageSandbox() {
   const [signatureBeatVisible, setSignatureBeatVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  /* ─── Access form ─── */
-  const [email, setEmail] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  /** null until after mount so SSR/prerender HTML matches client (no Date.now() mismatch). */
+  const [accessRemainingMs, setAccessRemainingMs] = useState<number | null>(null);
+
+  useEffect(() => {
+    const tick = () => {
+      setAccessRemainingMs(getAccessCycleRemainingMs(Date.now()));
+    };
+    tick();
+    const reduced =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const intervalMs = reduced ? 1000 : ACCESS_COUNTDOWN_TICK_MS;
+    const id = window.setInterval(tick, intervalMs);
+    return () => window.clearInterval(id);
+  }, []);
 
   /* ─── Hero rotating typewriter (certainty / clarity / …) — starts after headline + fog paragraph ─── */
   const [twWordIndex, setTwWordIndex] = useState(0);
@@ -392,7 +456,7 @@ export default function LandingPageSandbox() {
   const resetDemo = () => {
     setDemoState('idle');
     setShowTradeoffsModal(false);
-    setShowWaitlistModal(false);
+    setShowRequestInviteModal(false);
     setCommittedViewPhase('confirmed_only');
     setAgentSheetEntered(false);
     setAgentDemoPhase('assembling');
@@ -646,6 +710,9 @@ export default function LandingPageSandbox() {
     }, CLOSE_CONFETTI_TO_LINE_MS);
   };
 
+  const accessCountdownParts = getAccessCountdownParts(accessRemainingMs ?? 0);
+  const accessCountdownDisplay = formatAccessCountdown(accessRemainingMs ?? 0);
+
   return (
     <div
       className="min-h-screen bg-white text-black overflow-x-hidden"
@@ -681,71 +748,32 @@ export default function LandingPageSandbox() {
             Konquer
           </span>
 
-          {/* Waitlist badge — single blink so dot + label stay in sync */}
-          <div
-            className="hidden md:flex"
-            style={{
-              alignItems: 'center',
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '.08em',
-            }}
-          >
-            <span
-              className="inline-flex items-center gap-[7px] animate-waitlist-blink"
-              style={{ color: '#E57373' }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  display: 'inline-block',
-                  width: '7px',
-                  height: '7px',
-                  borderRadius: '50%',
-                  background: 'currentColor',
-                  flexShrink: 0,
-                }}
-              />
-              <span>Konquer is invitation-only.</span>
-            </span>
-          </div>
+          {/* Spacer (middle column of 1fr auto 1fr grid) */}
+          <span aria-hidden />
 
-          {/* CTA */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              gap: '4px',
-            }}
-          >
+          {/* Member Login */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               type="button"
-              onClick={() => setShowWaitlistModal(true)}
-              className="btn-gel-waitlist btn-gel-waitlist-animated join-waitlist-impact-ring join-waitlist-impact-ring--nav"
+              onClick={() => setShowMemberLoginModal(true)}
               style={{
-                color: '#ffffff',
-                whiteSpace: 'nowrap',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#5C5C5C',
+                textDecoration: 'none',
+                letterSpacing: '-0.01em',
+                transition: 'color .2s ease',
+                background: 'none',
+                border: 'none',
+                padding: 0,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#0A0A0A'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#5C5C5C'; }}
             >
-              <span className="join-waitlist-impact-ring-inner">Request Invite</span>
+              Member Login
             </button>
-            <a
-              href="#access"
-              style={{
-                fontSize: '11px',
-                fontWeight: 500,
-                lineHeight: 1,
-                color: '#6C6C6C',
-                textDecoration: 'underline',
-                textUnderlineOffset: '3px',
-              }}
-            >
-              Have An Invite Code?
-            </a>
           </div>
         </div>
       </nav>
@@ -778,11 +806,11 @@ export default function LandingPageSandbox() {
             fontWeight: 400,
             letterSpacing: '.18em',
             textTransform: 'uppercase',
-            color: '#5C5C5C',
+            color: '#414a9b',
             marginBottom: '28px',
           }}
         >
-          Strategic Execution Intelligence™
+          Precision Intelligence™
         </p>
 
         {/* Animated headline */}
@@ -809,6 +837,37 @@ export default function LandingPageSandbox() {
               {word}
             </span>
           ))}
+          <span aria-live="polite" className="sr-only">
+            {heroTypewriterReady ? twDisplayText : ''}
+          </span>
+          <span
+            aria-hidden
+            style={{
+              flexBasis: '100%',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'center',
+              color: TYPEWRITER_COLOR,
+              fontStyle: 'italic',
+              fontWeight: 700,
+              minHeight: '1em',
+              visibility: heroTypewriterReady ? 'visible' : 'hidden',
+            }}
+          >
+            {twDisplayText}
+            <span
+              className="animate-tw-blink"
+              style={{
+                opacity: 0.85,
+                fontWeight: 400,
+                color: TYPEWRITER_COLOR,
+                marginLeft: '0.02em',
+              }}
+            >
+              |
+            </span>
+          </span>
         </h1>
 
         {/* Problem paragraph */}
@@ -820,88 +879,125 @@ export default function LandingPageSandbox() {
             fontWeight: 300,
             lineHeight: 1.75,
             color: '#5C5C5C',
-            maxWidth: '560px',
+            maxWidth: '640px',
             marginBottom: '28px',
+            textWrap: 'pretty',
           }}
         >
-          Not because you lack drive. Not because you lack intelligence.
-          Because every morning, you open your tools and face the fog — a hundred
-          things competing for attention, none of them clearly the right one.
+          You don&rsquo;t lack drive. You don&rsquo;t lack intelligence. But you are
+          surrounded by noise. Every morning, you face a hundred competing priorities,
+          and the &lsquo;right&rsquo; move is buried in the fog. We provide the
+          leverage to find it.
         </p>
 
-        {/* Blue reveal — rotating typewriter */}
-        <p aria-live="polite" className="sr-only">
-          {heroTypewriterReady ? twDisplayText : ''}
-        </p>
-        <p
-          aria-hidden
+        {/* Gate statement — no box, hairlines above/below */}
+        <div
+          className="animate-fade-in"
           style={{
-            fontSize: 'clamp(50px, 7vw, 88px)',
-            fontWeight: 700,
-            fontStyle: 'italic',
-            lineHeight: 1.0,
-            color: TYPEWRITER_COLOR,
-            letterSpacing: '-0.03em',
-            marginBottom: '24px',
-            minHeight: 'clamp(50px, 7vw, 88px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            visibility: heroTypewriterReady ? 'visible' : 'hidden',
-          }}
-        >
-          {twDisplayText}
-          <span
-            className="animate-tw-blink"
-            style={{
-              opacity: 0.85,
-              fontWeight: 400,
-              color: TYPEWRITER_COLOR,
-            }}
-          >
-            |
-          </span>
-        </p>
-
-        {/* Scroll drip */}
-        <a
-          href="#todays-strategic-move"
-          style={{
+            animationDelay: '1.2s',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '6px',
-            fontSize: '11px',
-            fontWeight: 400,
-            letterSpacing: '.14em',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-            position: 'relative',
+            maxWidth: 'min(100%, 720px)',
+            width: '100%',
+            marginBottom: '32px',
           }}
-          className="animate-fade-in"
         >
           <span
+            aria-hidden
             style={{
               display: 'block',
-              width: '1px',
-              height: '28px',
+              width: '72px',
+              height: '1px',
               background: '#E4E4E4',
-              position: 'relative',
-              overflow: 'hidden',
+              marginBottom: '20px',
+            }}
+          />
+          <p
+            style={{
+              fontSize: 'clamp(14px, 1.6vw, 16px)',
+              fontWeight: 500,
+              color: '#3C3C43',
+              lineHeight: 1.6,
+              margin: 0,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Konquer is invitation-only and built for founders already generating $500K+ annually.
+          </p>
+          <span
+            aria-hidden
+            style={{
+              display: 'block',
+              width: '72px',
+              height: '1px',
+              background: '#E4E4E4',
+              marginTop: '20px',
+            }}
+          />
+        </div>
+
+        {/* CTA block */}
+        <div
+          className="animate-fade-in"
+          style={{
+            animationDelay: '1.4s',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 0,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setShowRequestInviteModal(true)}
+            className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
+            style={{
+              color: '#ffffff',
+              whiteSpace: 'nowrap',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              fontSize: '17px',
+              fontWeight: 600,
+              letterSpacing: '-0.005em',
             }}
           >
             <span
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                background: '#9C9C9C',
-                animation: 'scrollDrip 2.4s ease-in-out infinite',
-              }}
-            />
+              className="request-invite-impact-ring-inner"
+              style={{ padding: '18px 44px' }}
+            >
+              Request Invite
+            </span>
+          </button>
+
+          <Link
+            href="/redeem"
+            style={{
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#5C5C5C',
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              marginTop: '6px',
+            }}
+          >
+            <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
+              Have an invite code?
+            </span>
+          </Link>
+
+          <span
+            style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#9C9C9C',
+              marginTop: '12px',
+            }}
+          >
+            Starting at $1,000/mo.
           </span>
-          <span className="animate-see-how-gradient">See how it works</span>
-        </a>
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════
@@ -941,14 +1037,19 @@ export default function LandingPageSandbox() {
               The Prescription
             </p>
             <h2
-              className="whitespace-normal lg:whitespace-nowrap"
               style={{
                 fontSize: 'clamp(32px, 4vw, 48px)',
                 fontWeight: 600,
                 lineHeight: 1.05,
                 letterSpacing: '-0.03em',
                 color: '#1D1D1F',
+                marginTop: 0,
                 marginBottom: '16px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                textAlign: 'center',
+                textWrap: 'balance',
+                maxWidth: '780px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
               }}
             >
@@ -1907,25 +2008,40 @@ export default function LandingPageSandbox() {
                         </p>
                         <button
                           type="button"
-                          onClick={() => setShowWaitlistModal(true)}
-                          className="btn-gel-waitlist btn-gel-waitlist-animated join-waitlist-impact-ring"
+                          onClick={() => setShowRequestInviteModal(true)}
+                          className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
+                          style={{
+                            color: '#ffffff',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            fontSize: '17px',
+                            fontWeight: 600,
+                            letterSpacing: '-0.005em',
+                          }}
                         >
-                          <span className="join-waitlist-impact-ring-inner">
+                          <span
+                            className="request-invite-impact-ring-inner"
+                            style={{ padding: '18px 44px' }}
+                          >
                             Request Invite
                           </span>
                         </button>
-                        <a
-                          href="#access"
+                        <Link
+                          href="/redeem"
                           style={{
-                            fontSize: '12px',
-                            fontWeight: 500,
-                            color: '#6C6C6C',
+                            fontSize: '13px',
+                            fontWeight: 400,
+                            color: '#5C5C5C',
                             textDecoration: 'underline',
                             textUnderlineOffset: '3px',
+                            marginTop: '4px',
                           }}
                         >
-                          Have An Invite Code?
-                        </a>
+                          <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
+                            Have an invite code?
+                          </span>
+                        </Link>
                       </div>
                     </div>
                   )}
@@ -1952,7 +2068,7 @@ export default function LandingPageSandbox() {
                         <button
                           onClick={() => setDemoState('committed')}
                           type="button"
-                          className="btn-gel-waitlist btn-gel-waitlist-animated"
+                          className="btn-gel-invite btn-gel-invite-animated"
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -2089,7 +2205,7 @@ export default function LandingPageSandbox() {
                 marginBottom: '24px',
               }}
             >
-              High performers don&apos;t fail because they don&apos;t work hard. They fail because the systems
+              Founders don&apos;t fail because they don&apos;t work hard. They fail because the systems
               around them generate noise faster than clarity. Every tool adds data. Every meeting adds
               options. Every morning the list is longer than yesterday.
             </p>
@@ -2343,87 +2459,79 @@ export default function LandingPageSandbox() {
           </h2>
           <p
             style={{
-              fontSize: 'clamp(20px, 2.5vw, 28px)',
+              fontSize: 'clamp(18px, 2.2vw, 26px)',
               fontWeight: 300,
               fontStyle: 'italic',
               color: '#5C5C5C',
               lineHeight: 1.4,
               marginBottom: '40px',
+              whiteSpace: 'nowrap',
             }}
           >
             Now you can have the certainty to match it.
           </p>
 
-          {formSubmitted ? (
-            <div style={{ marginBottom: '20px' }}>
-              <p style={{ fontSize: '22px', fontWeight: 700, color: '#0A0A0A', marginBottom: '12px' }}>You&apos;re in.</p>
-              <p style={{ fontSize: '15px', fontWeight: 300, color: '#5C5C5C' }}>We&apos;ll be in touch when your access is ready.</p>
-            </div>
-          ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (email.trim()) setFormSubmitted(true);
-              }}
-              className="access-form-row"
-              style={{ gap: '0', marginBottom: '8px' }}
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="access-form-input"
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  padding: '14px 18px',
-                  fontSize: '14px',
-                  fontWeight: 300,
-                  border: '1px solid #E4E4E4',
-                  borderRight: 'none',
-                  borderRadius: '8px 0 0 8px',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  color: '#0A0A0A',
-                  background: '#fff',
-                }}
-              />
-              <button
-                type="submit"
-                className="btn-gel-waitlist btn-gel-waitlist-animated access-form-submit join-waitlist-impact-ring join-waitlist-impact-ring--access-form"
-                style={{
-                  color: '#ffffff',
-                  whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
-              >
-                <span className="join-waitlist-impact-ring-inner">Request Invite</span>
-              </button>
-            </form>
-          )}
-
-          {!formSubmitted && (
-            <a
-              href="#access"
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 0,
+              marginBottom: '20px',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setShowRequestInviteModal(true)}
+              className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
               style={{
-                display: 'inline-block',
-                fontSize: '12px',
-                fontWeight: 500,
-                color: '#6C6C6C',
+                color: '#ffffff',
+                whiteSpace: 'nowrap',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontSize: '17px',
+                fontWeight: 600,
+                letterSpacing: '-0.005em',
+              }}
+            >
+              <span
+                className="request-invite-impact-ring-inner"
+                style={{ padding: '18px 44px' }}
+              >
+                Request Invite
+              </span>
+            </button>
+            <Link
+              href="/redeem"
+              style={{
+                fontSize: '13px',
+                fontWeight: 400,
+                color: '#5C5C5C',
                 textDecoration: 'underline',
                 textUnderlineOffset: '3px',
-                marginBottom: '20px',
+                marginTop: '6px',
               }}
             >
-              Have An Invite Code?
-            </a>
-          )}
+              <span className="animate-demo-tagline-gradient" style={{ fontWeight: 400 }}>
+                Have an invite code?
+              </span>
+            </Link>
+            <span
+              style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#9C9C9C',
+                marginTop: '12px',
+              }}
+            >
+              Starting at $1,000/mo.
+            </span>
+          </div>
 
-          <p style={{ fontSize: '12px', fontWeight: 300, color: '#9C9C9C', letterSpacing: '.04em', marginBottom: '8px' }}>
-            Konquer is built for founders already generating $500K+ a year.
+          <p style={{ fontSize: '16px', fontWeight: 300, letterSpacing: '.04em', marginBottom: '8px', textAlign: 'center' }}>
+            <span className="animate-demo-tagline-gradient">
+              Konquer is built for founders already generating $500K+ a year.
+            </span>
           </p>
 
           <p
@@ -2432,14 +2540,13 @@ export default function LandingPageSandbox() {
               fontWeight: 300,
               fontStyle: 'italic',
               color: '#CCCCCC',
-              marginTop: 0,
+              marginTop: '48px',
               marginBottom: 0,
               letterSpacing: '-0.01em',
             }}
           >
             Know the move!
           </p>
-
         </div>
       </section>
 
@@ -2466,7 +2573,7 @@ export default function LandingPageSandbox() {
           <div>
             <span style={{ fontWeight: 700, fontSize: '16px', color: '#0A0A0A', marginRight: '16px' }}>Konquer</span>
             <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '.14em', textTransform: 'uppercase', color: '#9C9C9C' }}>
-              Strategic Execution Intelligence™
+              Precision Intelligence™
             </span>
           </div>
           <span style={{ fontSize: '11px', fontWeight: 300, color: '#9C9C9C' }}>
@@ -2545,7 +2652,7 @@ export default function LandingPageSandbox() {
                   value: '$13K per deal',
                   valueColor: ACCENT_BLUE,
                   label: 'MARGIN LEFT ON TABLE',
-                  labelColor: WAITLIST_OPEN_RED,
+                  labelColor: DELAY_IMPACT_RED,
                   iconPulse: true,
                   body: 'Every deal you close at $15K instead of $28K costs you the difference.',
                 },
@@ -2560,7 +2667,7 @@ export default function LandingPageSandbox() {
                   value: 'Wrong clients',
                   valueColor: '#0A0A0A',
                   label: 'PIPELINE POLLUTION',
-                  labelColor: WAITLIST_OPEN_RED,
+                  labelColor: DELAY_IMPACT_RED,
                   body: 'Low-value prospects keep entering your pipeline and burning your time.',
                 },
                 {
@@ -2574,7 +2681,7 @@ export default function LandingPageSandbox() {
                   value: 'Commodity positioning',
                   valueColor: ACCENT_BLUE,
                   label: 'MARKET PERCEPTION',
-                  labelColor: WAITLIST_OPEN_RED,
+                  labelColor: DELAY_IMPACT_RED,
                   body: 'You stay positioned as the cheaper option, not the premium choice.',
                 },
                 {
@@ -2588,7 +2695,7 @@ export default function LandingPageSandbox() {
                   value: 'Hire timeline extends',
                   valueColor: '#0A0A0A',
                   label: 'GROWTH DELAYED',
-                  labelColor: WAITLIST_OPEN_RED,
+                  labelColor: DELAY_IMPACT_RED,
                   body: 'Lower margin per deal means more volume needed to fund your next operator.',
                 },
               ].map((col) => (
@@ -2634,7 +2741,8 @@ export default function LandingPageSandbox() {
         </div>
       )}
 
-      <WaitlistModal open={showWaitlistModal} onClose={() => setShowWaitlistModal(false)} />
+      <RequestInviteModal open={showRequestInviteModal} onClose={() => setShowRequestInviteModal(false)} />
+      <MemberLoginModal open={showMemberLoginModal} onClose={() => setShowMemberLoginModal(false)} />
 
       {/* ═══════════════════════════════════════════
           RESPONSIVE STYLES (injected)
