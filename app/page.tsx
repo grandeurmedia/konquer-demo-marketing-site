@@ -1893,6 +1893,18 @@ export default function LandingPageSandbox() {
                             Request Invite
                           </span>
                         </button>
+                        <a
+                          href="#access"
+                          style={{
+                            fontSize: '12px',
+                            fontWeight: 500,
+                            color: '#6C6C6C',
+                            textDecoration: 'underline',
+                            textUnderlineOffset: '3px',
+                          }}
+                        >
+                          Have an invite code?
+                        </a>
                       </div>
                     </div>
                   )}
@@ -2333,7 +2345,7 @@ export default function LandingPageSandbox() {
                 if (email.trim()) setFormSubmitted(true);
               }}
               className="access-form-row"
-              style={{ gap: '0', marginBottom: '20px' }}
+              style={{ gap: '0', marginBottom: '8px' }}
             >
               <input
                 type="email"
@@ -2370,6 +2382,23 @@ export default function LandingPageSandbox() {
                 <span className="join-waitlist-impact-ring-inner">Request Invite</span>
               </button>
             </form>
+          )}
+
+          {!formSubmitted && (
+            <a
+              href="#access"
+              style={{
+                display: 'inline-block',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#6C6C6C',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                marginBottom: '20px',
+              }}
+            >
+              Have an invite code?
+            </a>
           )}
 
           <p style={{ fontSize: '12px', fontWeight: 300, color: '#9C9C9C', letterSpacing: '.04em', marginBottom: '8px' }}>
