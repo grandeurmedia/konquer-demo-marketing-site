@@ -711,7 +711,15 @@ export default function LandingPageSandbox() {
           </div>
 
           {/* CTA */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              gap: '4px',
+            }}
+          >
             <button
               type="button"
               onClick={() => setShowWaitlistModal(true)}
@@ -725,6 +733,19 @@ export default function LandingPageSandbox() {
             >
               <span className="join-waitlist-impact-ring-inner">Request Invite</span>
             </button>
+            <a
+              href="#access"
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                lineHeight: 1,
+                color: '#6C6C6C',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+              }}
+            >
+              Have An Invite Code?
+            </a>
           </div>
         </div>
       </nav>
@@ -1903,7 +1924,7 @@ export default function LandingPageSandbox() {
                             textUnderlineOffset: '3px',
                           }}
                         >
-                          Have an invite code?
+                          Have An Invite Code?
                         </a>
                       </div>
                     </div>
@@ -2397,7 +2418,7 @@ export default function LandingPageSandbox() {
                 marginBottom: '20px',
               }}
             >
-              Have an invite code?
+              Have An Invite Code?
             </a>
           )}
 
