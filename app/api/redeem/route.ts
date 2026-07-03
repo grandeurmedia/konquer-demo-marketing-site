@@ -27,6 +27,6 @@ export async function POST(req: Request) {
   return NextResponse.json({
     ok: true,
     message:
-      "Your code is verified and your request has been received. You'll hear from us within 48 hours.",
+      'Your code is being verified and your request has been received.',
   });
 }
