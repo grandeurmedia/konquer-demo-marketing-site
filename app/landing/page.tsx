@@ -66,7 +66,7 @@ function DiffStatement({ label, text }: DiffStatementProps) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function KonquerLanding() {
+export default function KonquerLanding(): React.JSX.Element {
   const [isScrolled, setIsScrolled]       = useState<boolean>(false);
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [email, setEmail]                 = useState<string>('');
