@@ -884,15 +884,15 @@ export default function LandingPageSandbox() {
             fontWeight: 300,
             lineHeight: 1.75,
             color: '#5C5C5C',
-            maxWidth: '640px',
+            width: '100%',
+            maxWidth: '880px',
             marginBottom: '28px',
-            textWrap: 'pretty',
           }}
         >
-          Your business is growing, but you aren&rsquo;t getting any richer. Every morning,
-          you&rsquo;re drowning in decisions without the clarity to see which move pays
-          &mdash; pouring your lifeblood into a machine where your profit is buried in the
-          data. Konquer cuts the noise and delivers the move that matters most.
+          There is a move in your business right now worth more than everything you did last month
+          combined. You&apos;ve been drowning in too many decisions to see it. Nothing you own is
+          built to find it. Konquer is. It puts the right move in your hands. Work less on the
+          wrong stuff, and double down on the levers that scale revenue.
         </p>
 
         {/* Gate statement — no box, hairlines above/below */}
