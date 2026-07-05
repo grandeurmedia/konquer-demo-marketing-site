@@ -190,7 +190,7 @@ const PILLARS = [
     num: '03',
     title: 'Identity',
     sub: 'what accumulates',
-    body: "Every completed move is a data point in a longer story. Over time, the pattern becomes clear: you are the person who knows the move and makes it. That identity compounds.",
+    body: "Every win is a data point. The pattern becomes undeniable: you aren't guessing—you're executing. That competence becomes your new default.",
   },
 ];
 
@@ -889,10 +889,10 @@ export default function LandingPageSandbox() {
             textWrap: 'pretty',
           }}
         >
-          You don&rsquo;t lack drive. You don&rsquo;t lack intelligence. But you are
-          surrounded by noise. Every morning, you face a hundred competing priorities,
-          and the &lsquo;right&rsquo; move is buried in the fog. We provide the
-          leverage to find it.
+          Your business is growing, but you aren&rsquo;t getting any richer. Every morning,
+          you&rsquo;re drowning in decisions without the clarity to see which move pays
+          &mdash; pouring your lifeblood into a machine where your profit is buried in the
+          data. Konquer cuts the noise and delivers the move that matters most.
         </p>
 
         {/* Gate statement — no box, hairlines above/below */}
@@ -1064,7 +1064,7 @@ export default function LandingPageSandbox() {
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
               }}
             >
-              Every morning you open Konquer, the fog is gone.
+              Every morning you open Konquer, the noise clears and the fog lifts.
             </h2>
             <p
               style={{
@@ -2187,7 +2187,7 @@ export default function LandingPageSandbox() {
               fontStyle: 'normal',
             }}
           >
-            The Fog Isn&apos;t Laziness. It Isn&apos;t Confusion. It&apos;s The Absence Of One Clear Signal.
+            The Myth of Hard Work.
           </p>
 
           {/* Body copy */}
@@ -2224,7 +2224,10 @@ export default function LandingPageSandbox() {
             >
               Founders don&apos;t fail because they don&apos;t work hard. They fail because the systems
               around them generate noise faster than clarity. Every tool adds data. Every meeting adds
-              options. Every morning the list is longer than yesterday.
+              options. Every morning the list is longer than yesterday. By Friday, Monday&apos;s list is
+              still sitting there &mdash; just buried under six new ones. Konquer is the only system that
+              tells you which one move pays &mdash; right now, in your actual business &mdash; and exactly
+              what it costs you to wait.
             </p>
             <p
               style={{
@@ -2234,11 +2237,26 @@ export default function LandingPageSandbox() {
                 color: '#5C5C5C',
               }}
             >
-              Busy is not effective. Volume is not strategy.{' '}
-              <strong className="animate-demo-tagline-gradient" style={{ fontWeight: 600 }}>
+              Busy is not effective. Volume is not strategy.
+              <strong
+                className="animate-demo-tagline-gradient"
+                style={{ display: 'block', marginTop: '24px', fontWeight: 600 }}
+              >
                 The single move that actually moves the number is buried under everything else.
-              </strong>{' '}
-              Konquer removes the burial.
+              </strong>
+            </p>
+            <p
+              style={{
+                fontSize: '17px',
+                fontWeight: 300,
+                lineHeight: 1.87,
+                color: '#5C5C5C',
+                marginTop: '24px',
+                marginBottom: 0,
+              }}
+            >
+              Konquer kills the noise, so you stop grinding in your business and start profiting more
+              from it.
             </p>
           </div>
         </div>
