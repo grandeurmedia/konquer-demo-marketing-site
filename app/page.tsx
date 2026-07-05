@@ -960,19 +960,35 @@ export default function LandingPageSandbox() {
             className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
             style={{
               color: '#ffffff',
-              whiteSpace: 'nowrap',
               cursor: 'pointer',
               fontFamily: 'inherit',
-              fontSize: '17px',
+              fontSize: '20px',
               fontWeight: 600,
               letterSpacing: '-0.005em',
             }}
           >
             <span
               className="request-invite-impact-ring-inner"
-              style={{ padding: '18px 44px' }}
+              style={{
+                padding: '16px 44px',
+                display: 'inline-flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '2px',
+                whiteSpace: 'normal',
+              }}
             >
               Request Invite
+              <span
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  color: 'rgba(255, 255, 255, 0.72)',
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Starting at $1,000/mo.
+              </span>
             </span>
           </button>
 
@@ -997,17 +1013,6 @@ export default function LandingPageSandbox() {
               Have an invite code?
             </span>
           </button>
-
-          <span
-            style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: '#9C9C9C',
-              marginTop: '12px',
-            }}
-          >
-            Starting at $1,000/mo.
-          </span>
         </div>
       </section>
 
@@ -1018,7 +1023,7 @@ export default function LandingPageSandbox() {
         id="demo"
         style={{
           paddingTop: '88px',
-          paddingBottom: '96px',
+          paddingBottom: '48px',
           background: '#F5F5F7',
           borderTop: '1px solid rgba(0,0,0,0.06)',
         }}
@@ -2023,19 +2028,35 @@ export default function LandingPageSandbox() {
                           className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
                           style={{
                             color: '#ffffff',
-                            whiteSpace: 'nowrap',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            fontSize: '17px',
+                            fontSize: '20px',
                             fontWeight: 600,
                             letterSpacing: '-0.005em',
                           }}
                         >
                           <span
                             className="request-invite-impact-ring-inner"
-                            style={{ padding: '18px 44px' }}
+                            style={{
+                              padding: '16px 44px',
+                              display: 'inline-flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: '2px',
+                              whiteSpace: 'normal',
+                            }}
                           >
                             Request Invite
+                            <span
+                              style={{
+                                fontSize: '13px',
+                                fontWeight: 400,
+                                color: 'rgba(255, 255, 255, 0.72)',
+                                letterSpacing: '0.01em',
+                              }}
+                            >
+                              Starting at $1,000/mo.
+                            </span>
                           </span>
                         </button>
                         <button
@@ -2132,12 +2153,19 @@ export default function LandingPageSandbox() {
             committedViewPhase === 'agent_overlay' &&
             (agentDemoPhase === 'assembling' || agentDemoPhase === 'executing')
           ) && (
+          <div
+            style={{
+              marginTop: '24px',
+              textAlign: 'center',
+            }}
+          >
           <p
             style={{
               textAlign: 'center',
               fontSize: '15px',
               fontWeight: 300,
-              marginTop: '48px',
+              marginTop: 0,
+              marginBottom: 0,
               letterSpacing: '.04em',
               color: '#AEAEB2',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -2147,6 +2175,22 @@ export default function LandingPageSandbox() {
               You know the move. You execute. The number moves.
             </span>
           </p>
+          <p
+            style={{
+              fontSize: '18px',
+              fontWeight: 600,
+              color: '#5C5C5C',
+              lineHeight: 1.6,
+              textAlign: 'center',
+              marginTop: '20px',
+              marginBottom: 0,
+            }}
+          >
+            Within 90 days, Konquer will make or save you 10x your subscription cost.
+            <br />
+            If it doesn&apos;t, we&apos;ll give you your money back!
+          </p>
+          </div>
           )}
         </div>
       </section>
@@ -2473,7 +2517,7 @@ export default function LandingPageSandbox() {
         <div
           className="site-gutter"
           style={{
-            maxWidth: '640px',
+            maxWidth: '960px',
             margin: '0 auto',
             width: '100%',
             boxSizing: 'border-box',
@@ -2499,11 +2543,27 @@ export default function LandingPageSandbox() {
               fontStyle: 'italic',
               color: '#5C5C5C',
               lineHeight: 1.4,
-              marginBottom: '40px',
+              marginBottom: '16px',
               whiteSpace: 'nowrap',
             }}
           >
             Now you can have the certainty to match it.
+          </p>
+
+          <p
+            style={{
+              fontSize: '18px',
+              fontWeight: 600,
+              color: '#5C5C5C',
+              lineHeight: 1.6,
+              textAlign: 'center',
+              marginTop: 0,
+              marginBottom: '40px',
+            }}
+          >
+            Within 90 days, Konquer will make or save you 10x your subscription cost.
+            <br />
+            If it doesn&apos;t, we&apos;ll give you your money back!
           </p>
 
           <div
@@ -2521,19 +2581,35 @@ export default function LandingPageSandbox() {
               className="btn-gel-invite btn-gel-invite-animated request-invite-impact-ring"
               style={{
                 color: '#ffffff',
-                whiteSpace: 'nowrap',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                fontSize: '17px',
+                fontSize: '20px',
                 fontWeight: 600,
                 letterSpacing: '-0.005em',
               }}
             >
               <span
                 className="request-invite-impact-ring-inner"
-                style={{ padding: '18px 44px' }}
+                style={{
+                  padding: '16px 44px',
+                  display: 'inline-flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '2px',
+                  whiteSpace: 'normal',
+                }}
               >
                 Request Invite
+                <span
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 400,
+                    color: 'rgba(255, 255, 255, 0.72)',
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  Starting at $1,000/mo.
+                </span>
               </span>
             </button>
             <button
@@ -2557,16 +2633,6 @@ export default function LandingPageSandbox() {
                 Have an invite code?
               </span>
             </button>
-            <span
-              style={{
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#9C9C9C',
-                marginTop: '12px',
-              }}
-            >
-              Starting at $1,000/mo.
-            </span>
           </div>
 
           <p style={{ fontSize: '16px', fontWeight: 300, letterSpacing: '.04em', marginBottom: '8px', textAlign: 'center' }}>
