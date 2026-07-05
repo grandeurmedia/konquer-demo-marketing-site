@@ -2162,7 +2162,7 @@ export default function LandingPageSandbox() {
           <p
             style={{
               textAlign: 'center',
-              fontSize: '15px',
+              fontSize: '17px',
               fontWeight: 300,
               marginTop: 0,
               marginBottom: 0,
@@ -2174,21 +2174,6 @@ export default function LandingPageSandbox() {
             <span className="animate-demo-tagline-gradient">
               You know the move. You execute. The number moves.
             </span>
-          </p>
-          <p
-            style={{
-              fontSize: '18px',
-              fontWeight: 600,
-              color: '#5C5C5C',
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginTop: '20px',
-              marginBottom: 0,
-            }}
-          >
-            Within 90 days, Konquer will make or save you 10x your subscription cost.
-            <br />
-            If it doesn&apos;t, we&apos;ll give you your money back!
           </p>
           </div>
           )}
