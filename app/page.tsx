@@ -2242,7 +2242,7 @@ export default function LandingPageSandbox() {
                 className="animate-demo-tagline-gradient"
                 style={{ display: 'block', marginTop: '24px', fontWeight: 600 }}
               >
-                The single move that actually moves the number is buried under everything else.
+                The single, high-leverage move that actually impacts your bottom line is lost under everything else.
               </strong>
             </p>
             <p
